@@ -1,28 +1,19 @@
-// Controller to manage products
-
-
-// Importing the Product model
 const Product = require('../models/products');
 
-
 // Function to view all the products available in the inventory
-module.exports.listProducts =  async function(req,res){
-    
+module.exports.showProducts =  async function(req,res){
     try{
-        
-        // Fetching all the Products
         let product = await Product.find({});
         
         // Formatting the data to clear understanding
-        const formattedProducts = product.map((product,index) => ({
+        const formattedProducts = product.map((product) => ({
             id: product.id,
             name: product.name,
             quantity: product.quantity
         }));
         
         // return the formattted data on success
-        return res.status(200).json({
-            
+        return res.status(200).json({  
             data : {
                 Products : formattedProducts,
             },
@@ -30,20 +21,13 @@ module.exports.listProducts =  async function(req,res){
         });
         
     } catch (err){
-        
-        // To view error
-        console.log("****",err);
-        
-        //Throws error on failure
         return res.status(500).json({
             message : "Error in fetching products"
         });
     }
 };
 
-
 module.exports.create = async function(req,res){
-    // console.log(req.body.name, req.body.quantity);
     try{
         
         // Creating a new Product
@@ -67,32 +51,19 @@ module.exports.create = async function(req,res){
         });
         
     }catch(err){
-        
-        // To view error
-        console.log("****",err);
-        
-        //Throws error on failure
         return res.status(500).json({
             message : "Error in adding product to inventory"
         });
     }
 };
 
+// For delete
 module.exports.delete = async function(req,res){
-    // console.log(req.params.id);
-    
     try{
-        
-        //Extracting the id from the URL which are passed through params
         const id = req.params.id;
-        
-        // Fetching the product via its id
+
         let product = await Product.findById(id);
-        
-        // If product is not found
         if(!product){
-            
-            // Throws Error
             return res.status(404).json({
                 message: "Product not found!!"
             });
@@ -101,7 +72,6 @@ module.exports.delete = async function(req,res){
         // Deleting the particular product
         let deleteProduct = await product.deleteOne();
         
-        // on success shows the deleted product
         return res.status(200).json({
             data : {
                 product : {
@@ -112,27 +82,17 @@ module.exports.delete = async function(req,res){
             },
             message : "Product deleted successfully"
         });
-        
     }catch(err){
-        
-        // To view error
-        console.log("****",err);
-        
-        //Throws error on failure
         return res.status(500).json({
             message : "Error in deleting product"
         });
     }
 };
 
+// for update the product quantity
 module.exports.updateQuantity = async function(req,res){
-    
     try{
-        
-        //Extracting the Quantity to update from the URL which are passed through query
         let update_quantity = req.query.number;
-        
-        //Extracting the id from the URL which are passed through params
         const id = req.params.id;
         
         // Fetching the product by id
@@ -140,13 +100,10 @@ module.exports.updateQuantity = async function(req,res){
         
         // If product is not found
         if(!product){
-            
-            // Throws Error
             return res.status(404).json({
                 message: "Product not found!!"
             });
         }
-        
         
         update_quantity = parseInt(update_quantity,10);
 
@@ -158,9 +115,7 @@ module.exports.updateQuantity = async function(req,res){
             
             // storing the updated product
             let updatedProduct = await product.save();
-            
-            
-            // on success shows the updated product
+
             return res.status(200).json({
                 data : {
                     product : {
@@ -173,19 +128,11 @@ module.exports.updateQuantity = async function(req,res){
             });
         }
         else{
-            // if not a number 
             return res.status(400).json({
                 message : "Please enter a Number to update quantity"
             });
         }
-        
-        
     }catch(err){
-        
-        // To view error
-        console.log("****",err);
-        
-        //Throws error on failure
         return res.status(500).json({
             message : "Error in updating quantity"
         });

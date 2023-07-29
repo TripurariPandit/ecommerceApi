@@ -5,12 +5,15 @@ const db = require('./config/mongoose.js');
 const app = express();
 const port = 4000;
 
-//Enable us to pass data through URL
 app.use(express.urlencoded({extended:true}));
 
 //Routes
 app.use('/',require('./routes/product'));
 
-app.listen(port,()=>{
+app.listen(port,function(err){
+    if(err){
+        console.log(`Error in running server:  ${err}`);
+        return;
+    }
     console.log(`Server up and running on port:  ${port}`);
 });

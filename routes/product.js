@@ -5,16 +5,15 @@ const router = express.Router();
 const productController = require('../controllers/product_controller');
 
 // Shows All the Products
-router.get('/',productController.listProducts);
+router.get('/', productController.showProducts);
 
 // Create  a new Product
-router.post('/create',productController.create);
+router.post('/create', productController.create);
 
 // Delete a Product with the given id
-router.delete('/:id',productController.delete);
+router.delete('/:id', productController.delete);
 
 // Updates a Product with the given id to the given ammount
-router.post('/:id/update_quantity',productController.updateQuantity);
+router.post('/:id/update_quantity', productController.updateQuantity);
 
-// Exporting the router
 module.exports = router;
